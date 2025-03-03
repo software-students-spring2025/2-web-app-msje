@@ -4,7 +4,7 @@ import flask_login
 from flask import Flask, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-from users import load_user, check_user
+from users import load_user, check_user, User
 
 app = Flask(__name__)
 
@@ -51,9 +51,29 @@ def login():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    return render_template("login.html") #return to login page?
+    return render_template("index.html") #return to index (index is public?)
 
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template("register.html")
+    
+    username = request.form.get('username')
+    password = request.form.get('password')
 
+    # username is taken
+    if db["users"].find_one({"username": username}):
+        return render_template("register.html")
+    new_user = {
+        "username": username,
+        "password": password 
+    }
+
+    user = db["users"].insert_one(new_user)
+
+    user = User(str(user.inserted_id), username, password)
+    flask_login.login_user(user)
+    return redirect(url_for('index'))
 
 # with data from database
 @app.route("/")
@@ -73,6 +93,7 @@ def post_detail(post_id):
 
 
 @app.route("/create_post", methods = ['GET','POST'])
+@flask_login.login_required
 def create_post():
 
     user = None
@@ -104,6 +125,7 @@ def create_post():
     return render_template("create_post.html") 
 
 @app.route("/post/<string:post_id>/comment", methods = ['POST'])
+@flask_login.login_required
 def add_comment(post_id):
     new_comment = { # idk if this should be form -- is this gonna be added to post detail page?
         "user": request.form.get("user"),
@@ -118,6 +140,7 @@ def add_comment(post_id):
     return redirect(url_for('post_detail', post_id=post_id))
 
 @app.route("/post/<string:post_id>/edit", methods=['GET','POST'])
+@flask_login.login_required
 def edit_post(post_id):
     post = db["posts"].find_one({"_id": ObjectId(post_id)}) #find post (for get)
 
@@ -142,6 +165,7 @@ def edit_post(post_id):
 
 
 @app.route("/post/<string:post_id>/delete", methods=['POST'])
+@flask_login.login_required
 def delete_post(post_id):
     db["posts"].delete_one({"_id": ObjectId(post_id)}) #delete post
     return redirect(url_for('index'))
