@@ -166,6 +166,7 @@ def edit_post(post_id):
 
 
 @app.route("/post/<string:post_id>/delete", methods=['GET', 'POST'])
+@flask_login.login_required
 def delete_post(post_id):
     if request.method == 'GET':
         # Show confirmation page
