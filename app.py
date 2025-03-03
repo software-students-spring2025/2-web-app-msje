@@ -4,7 +4,7 @@ import flask_login
 from flask import Flask, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-from users import load_user
+from users import load_user, check_user
 
 app = Flask(__name__)
 
@@ -28,6 +28,31 @@ db = connection["Forum"]
 @login_manager.user_loader
 def user_loader(user_id):
     return load_user(db, user_id)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template("login.html")
+    
+    # user input
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # check if it taken
+    valid_user = check_user(db, username, password)
+
+    if valid_user:
+        flask_login.login_user(valid_user)
+        return redirect(url_for('index'))
+    
+    return render_template("login.html")
+
+@app.route("/logout")
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return render_template("login.html") #return to login page?
+
 
 
 # with data from database
