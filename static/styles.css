@@ -141,6 +141,26 @@ li {
     text-decoration: none;
 }
 
+/* Post actions */
+.post-actions {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
 /* Back Button Styles */
 .back-button {
     display: inline-block;
@@ -156,6 +176,48 @@ li {
     background-color: #5a6268;
     text-decoration: none;
     color: white;
+}
+
+/* Delete confirmation page */
+.alert {
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
 }
 
 /* Mobile Optimization */
