@@ -1,11 +1,27 @@
 import pymongo
 from app import db
 from bson.objectid import ObjectId
+import flask_login
+
+class User(flask_login.UserMixin):
+    pass
+
+@login_manager.user_loader
+def user_loader(email):
+    if email not in users:
+        return
+
+    user = User()
+    user.id = email
+    return user
 
 
-user = {
-    "name": "John Doe",
-    "email": "jd1234@nyu.edu",
-    "username": "jd1234",
-    "password": "password1"
-}
+@login_manager.request_loader
+def request_loader(request):
+    email = request.form.get('email')
+    if email not in users:
+        return
+
+    user = User()
+    user.id = email
+    return user
