@@ -106,5 +106,20 @@ def delete_post(post_id):
     db["posts"].delete_one({"_id": ObjectId(post_id)}) #delete post (for get)
     return redirect(url_for('index'))
 
+@app.route("/search")
+def search():
+    query = request.args.get("q", "")
+    if query:
+        # Search in title, content, and user fields
+        results = db["posts"].find({
+            "$or": [
+                {"title": {"$regex": query, "$options": "i"}},
+                {"content": {"$regex": query, "$options": "i"}},
+                {"user": {"$regex": query, "$options": "i"}}
+            ]
+        })
+        return render_template("search.html", results=results, query=query)
+    return render_template("search.html", results=None, query=None)
+
 if __name__ == "__main__":
     app.run(debug=True)
