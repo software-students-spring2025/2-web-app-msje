@@ -1,11 +1,19 @@
 import pymongo
 import os
+import flask_login
 from flask import Flask, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
 
 
 app = Flask(__name__)
+
+# from flask-login description
+app.secret_key = '123'
+
+login_manager = flask_login.LoginManager()
+
+login_manager.init_app(app)
 
 # make a connection to the database server
 
@@ -103,7 +111,7 @@ def edit_post(post_id):
 
 @app.route("/post/<string:post_id>/delete", methods=['POST'])
 def delete_post(post_id):
-    db["posts"].delete_one({"_id": ObjectId(post_id)}) #delete post (for get)
+    db["posts"].delete_one({"_id": ObjectId(post_id)}) #delete post
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
