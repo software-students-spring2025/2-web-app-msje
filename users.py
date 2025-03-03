@@ -1,5 +1,3 @@
-import pymongo
-from app import db
 from bson.objectid import ObjectId
 import flask_login
 
@@ -9,6 +7,7 @@ class User(flask_login.UserMixin):
         self.username = username
         self.password = password
 
+# cannot import db -> circular import problem
 def load_user(db, user_id):
     user_info = db["users"].find_one({"_id": ObjectId(user_id)})
     if user_info:
