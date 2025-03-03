@@ -76,6 +76,88 @@ li {
     margin-bottom: 15px;
 }
 
+/* Search Form Styles */
+.search-form {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.search-form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.search-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Action Buttons Styles */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.search-button,
+.create-post-button {
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    color: white;
+    flex: 1;
+    text-align: center;
+}
+
+.search-button {
+    background-color: #28a745;
+}
+
+.search-button:hover {
+    background-color: #218838;
+    color: white;
+    text-decoration: none;
+}
+
+.create-post-button {
+    background-color: #007bff;
+}
+
+.create-post-button:hover {
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+}
+
+/* Back Button Styles */
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+    text-decoration: none;
+    color: white;
+}
+
 /* Mobile Optimization */
 @media (max-width: 600px) {
     h2 {
@@ -90,5 +172,3 @@ li {
         font-size: 14px;
     }
 }
-
-
