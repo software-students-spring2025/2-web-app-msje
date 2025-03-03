@@ -4,7 +4,7 @@ import flask_login
 from flask import Flask, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-
+from users import load_user
 
 app = Flask(__name__)
 
@@ -14,6 +14,7 @@ app.secret_key = '123'
 login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 # make a connection to the database server
 
@@ -22,6 +23,12 @@ mongo_uri = os.getenv("MONGO_URI")
 
 connection = pymongo.MongoClient(mongo_uri)
 db = connection["Forum"]
+
+
+@login_manager.user_loader
+def user_loader(user_id):
+    return load_user(db, user_id)
+
 
 # with data from database
 @app.route("/")
