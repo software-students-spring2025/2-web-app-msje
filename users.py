@@ -4,24 +4,20 @@ from bson.objectid import ObjectId
 import flask_login
 
 class User(flask_login.UserMixin):
-    pass
+    def __init__(self, user_id, username, password):
+        self.id = user_id
+        self.username = username
+        self.password = password
 
-@login_manager.user_loader
-def user_loader(email):
-    if email not in users:
-        return
+def load_user(db, user_id):
+    user_info = db["users"].find_one({"_id": ObjectId(user_id)})
+    if user_info:
+        return User(user_info['_id'], user_info['username'], user_info['password'])
+    return None
 
-    user = User()
-    user.id = email
-    return user
+def check_user(db, username, password):
+    user_info = db["users"].find_one({"username": username})
 
-
-@login_manager.request_loader
-def request_loader(request):
-    email = request.form.get('email')
-    if email not in users:
-        return
-
-    user = User()
-    user.id = email
-    return user
+    if user_info['password'] == password and user_info:
+        return User(user_info['_id'], user_info['username'], user_info['password'])
+    return None
