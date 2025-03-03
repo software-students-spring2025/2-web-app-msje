@@ -165,11 +165,19 @@ def edit_post(post_id):
     return render_template("edit_post.html", post=post)
 
 
-@app.route("/post/<string:post_id>/delete", methods=['POST'])
-@flask_login.login_required
+@app.route("/post/<string:post_id>/delete", methods=['GET', 'POST'])
 def delete_post(post_id):
-    db["posts"].delete_one({"_id": ObjectId(post_id)}) #delete post
-    return redirect(url_for('index'))
+    if request.method == 'GET':
+        # Show confirmation page
+        post = db["posts"].find_one({"_id": ObjectId(post_id)})
+        if post:
+            return render_template("delete_confirmation.html", post=post)
+        else:
+            return "<h1>Post Not Found</h1>", 404
+    else:
+        # Handle the actual deletion
+        db["posts"].delete_one({"_id": ObjectId(post_id)})
+        return redirect(url_for('index'))
 
 @app.route("/search")
 def search():
