@@ -8,7 +8,8 @@ from users import load_user, check_user, User
 
 app = Flask(__name__)
 
-# from flask-login description
+# from flask-login description 
+# need to change this (shouldn't be hardcoded)
 app.secret_key = '123'
 
 login_manager = flask_login.LoginManager()
@@ -51,19 +52,19 @@ def login():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    return render_template("index.html") #return to index (index is public?)
+    return redirect(url_for('index')) #return to index (index is public?)
 
 @app.route("/register", methods=['GET', 'POST'])
-def register():
+def create_account():
     if request.method == 'GET':
-        return render_template("register.html")
+        return render_template("create_account.html")
     
     username = request.form.get('username')
     password = request.form.get('password')
 
     # username is taken
     if db["users"].find_one({"username": username}):
-        return render_template("register.html")
+        return render_template("create_account.html")
     new_user = {
         "username": username,
         "password": password 
