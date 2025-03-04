@@ -33,17 +33,24 @@ A Flask-based forum application that allows users to create, edit, delete posts 
 ## User Stories
 
 Our user stories are tracked in the GitHub Projects board. They include:
+
 - As a user, I can create new posts to share my thoughts
+- As a user, I want to click on any brief of a post to view the whole post
+- As a user, I want to be able to see all briefs of posts to choose which one to click on
 - As a user, I can edit my existing posts to update information
 - As a user, I can delete my posts when they are no longer relevant
 - As a user, I can comment on posts to engage in discussions
-- As a user, I can search for posts by title, content, or username to find relevant information
+- As a user, I want to see the comments on a post to read the discussion
+- As a user, I can search for posts by title to find topics I want to see
+- As a user, I want to search for posts by author to find discussion from one person
+- As a user, I want to search for posts by keywords in the content to see discussion related to a topic
 
 [Link to User Stories Board](https://github.com/software-students-spring2025/2-web-app-msje/projects)
 
 ## Task Boards
 
 Our development progress is tracked using GitHub Projects. You can view our:
+
 - [Sprint Planning Board](https://github.com/software-students-spring2025/2-web-app-msje/projects)
 - [Bug Tracking Board](https://github.com/software-students-spring2025/2-web-app-msje/projects)
 - [Feature Request Board](https://github.com/software-students-spring2025/2-web-app-msje/projects)
