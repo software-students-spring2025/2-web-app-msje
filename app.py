@@ -1,10 +1,22 @@
 import pymongo
 import os
+import flask_login
 from flask import Flask, redirect, render_template, request, url_for
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
+from users import load_user, check_user, User
+
 
 app = Flask(__name__)
+
+# from flask-login description 
+# need to change this (shouldn't be hardcoded)
+app.secret_key = '123'
+
+login_manager = flask_login.LoginManager()
+
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 # make a connection to the database server
 load_dotenv()
@@ -12,6 +24,57 @@ mongo_uri = os.getenv("MONGO_URI")
 
 connection = pymongo.MongoClient(mongo_uri)
 db = connection["Forum"]
+
+
+@login_manager.user_loader
+def user_loader(user_id):
+    return load_user(db, user_id)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template("login.html")
+    
+    # user input
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # check if it taken
+    valid_user = check_user(db, username, password)
+
+    if valid_user:
+        flask_login.login_user(valid_user)
+        return redirect(url_for('index'))
+    
+    return render_template("login.html")
+
+@app.route("/logout")
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return redirect(url_for('index')) #return to index (index is public?)
+
+@app.route("/register", methods=['GET', 'POST'])
+def create_account():
+    if request.method == 'GET':
+        return render_template("create_account.html")
+    
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # username is taken
+    if db["users"].find_one({"username": username}):
+        return render_template("create_account.html")
+    new_user = {
+        "username": username,
+        "password": password 
+    }
+
+    user = db["users"].insert_one(new_user)
+
+    user = User(str(user.inserted_id), username, password)
+    flask_login.login_user(user)
+    return redirect(url_for('index'))
 
 # with data from database
 @app.route("/")
@@ -31,6 +94,7 @@ def post_detail(post_id):
 
 
 @app.route("/create_post", methods = ['GET','POST'])
+@flask_login.login_required
 def create_post():
 
     user = None
@@ -62,6 +126,7 @@ def create_post():
     return render_template("create_post.html") 
 
 @app.route("/post/<string:post_id>/comment", methods = ['POST'])
+@flask_login.login_required
 def add_comment(post_id):
     new_comment = { # idk if this should be form -- is this gonna be added to post detail page?
         "user": request.form.get("user"),
@@ -76,6 +141,7 @@ def add_comment(post_id):
     return redirect(url_for('post_detail', post_id=post_id))
 
 @app.route("/post/<string:post_id>/edit", methods=['GET','POST'])
+@flask_login.login_required
 def edit_post(post_id):
     post = db["posts"].find_one({"_id": ObjectId(post_id)}) #find post (for get)
 
@@ -97,6 +163,7 @@ def edit_post(post_id):
 
 
 @app.route("/post/<string:post_id>/delete", methods=['GET', 'POST'])
+@flask_login.login_required
 def delete_post(post_id):
     if request.method == 'GET':
         # Show confirmation page
