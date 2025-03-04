@@ -125,12 +125,12 @@ def create_post():
     
     return render_template("create_post.html") 
 
-@app.route("/post/<string:post_id>/comment", methods = ['POST'])
+@app.route("/post/<string:post_id>/comment", methods=['POST'])
 @flask_login.login_required
 def add_comment(post_id):
-    new_comment = { # idk if this should be form -- is this gonna be added to post detail page?
-        "user": request.form.get("user"),
-        "comment": request.form.get("content")
+    new_comment = {
+        "user": flask_login.current_user.username,  # Use the current logged-in user's username
+        "comment": request.form.get("content")  # Get the comment content from the form
     }
 
     db["posts"].update_one(
