@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 from dotenv import load_dotenv
 from users import load_user, check_user, User
 
+
 app = Flask(__name__)
 
 # from flask-login description 
@@ -18,7 +19,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 # make a connection to the database server
-
 load_dotenv()
 mongo_uri = os.getenv("MONGO_URI")
 
@@ -116,7 +116,7 @@ def create_post():
 
         result = db["posts"].insert_one(new_post) # add post to database
 
-        if result.inserted_id: # check it was inserted
+        if result.inserted_id:
             # after making a post, where should user go?
             return redirect(url_for('index')) # this can change
         else:
@@ -146,14 +146,11 @@ def edit_post(post_id):
     post = db["posts"].find_one({"_id": ObjectId(post_id)}) #find post (for get)
 
     if request.method == 'POST':
-        new_title = request.form.get("title")
-        new_content = request.form.get("content")
-
         result = db["posts"].update_one(
             {"_id": ObjectId(post_id)},
             {"$set": {
-                "title": new_title,
-                "content": new_content
+                "title": request.form.get("title"),
+                "content": request.form.get("content")
             }}
         )
 
