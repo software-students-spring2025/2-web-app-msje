@@ -17,13 +17,9 @@ body {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Post Styling */
-.post {
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* Headings */
+h1, h2 {
+    margin-bottom: 1.5rem;
 }
 
 h3 {
@@ -35,6 +31,7 @@ h4 {
     margin-top: 10px;
 }
 
+/* Lists */
 ul {
     padding-left: 20px;
 }
@@ -44,6 +41,15 @@ li {
     margin: 5px 0;
     padding: 5px;
     border-radius: 5px;
+}
+
+/* Post Styling */
+.post {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Read More Link */
@@ -72,6 +78,7 @@ li {
     text-decoration: underline;
 }
 
+/* Form Box */
 .form-box {
     margin-bottom: 15px;
 }
@@ -148,6 +155,7 @@ li {
     gap: 10px;
 }
 
+/* Delete button (overrides & adds cursor pointer) */
 .delete-button {
     background-color: #dc3545;
     color: white;
@@ -155,6 +163,7 @@ li {
     border-radius: 4px;
     text-decoration: none;
     display: inline-block;
+    cursor: pointer; /* Added so it behaves like a button */
 }
 
 .delete-button:hover {
@@ -191,12 +200,6 @@ li {
     color: #856404;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
 .btn {
     padding: 8px 16px;
     border-radius: 4px;
@@ -220,17 +223,64 @@ li {
     opacity: 0.9;
 }
 
+/* ========== NEW CLASSES FOR EDIT/CREATE FORMS ========== */
+
+/* Group label + input/textarea together */
+.form-group {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Layout row for placing buttons side by side */
+.button-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Update (Submit) button styling */
+.submit-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
 /* Mobile Optimization */
 @media (max-width: 600px) {
     h2 {
         font-size: 18px;
     }
-
     h3 {
         font-size: 16px;
     }
-
     p, li {
         font-size: 14px;
+    }
+
+    /* Reduce container padding so it fits better on small screens */
+    .container {
+        padding: 10px;
     }
 }
