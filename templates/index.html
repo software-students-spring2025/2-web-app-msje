@@ -11,9 +11,13 @@
         <h2>The MSJE Forum</h2>
         <div class="auth-button">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('logout') }}" class="auth-btn">Logout</a>
+                <form action="{{ url_for('logout') }}" method="GET" class="inline-form">
+                    <button type="submit" class="submit-button">Logout</button>
+                </form>
             {% else %}
-                <a href="{{ url_for('login') }}" class="auth-btn">Login</a>
+                <form action="{{ url_for('login') }}" method="GET" class="inline-form">
+                    <button type="submit" class="submit-button">Login</button>
+                </form>
             {% endif %}
         </div>
         {% for item in data %}
@@ -21,7 +25,7 @@
             <h3>{{ item["title"] }}</h3>
             <p><strong>By:</strong> {{ item["user"] }}</p>
             <p>{{ " ".join(item["content"].split()[:20]) }}...</p> <!-- Show first 20 words of "content"-->
-            <a href="{{ url_for('post_detail', post_id=item._id|string)}}" class="read-more">Read More</a>
+            <a href="{{ url_for('post_detail', post_id=item._id|string) }}" class="read-more">Read More</a>
         </div>
         {% endfor %}
 
@@ -29,7 +33,9 @@
         <div class="action-buttons">
             <a href="{{ url_for('search') }}" class="search-button">Search Posts</a>
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('create_post') }}" class="submit-button">Create New Post</a>
+                <form action="{{ url_for('create_post') }}" method="GET" class="inline-form">
+                    <button type="submit" class="submit-button">Create New Post</button>
+                </form>
             {% endif %}
         </div>
     </div>
