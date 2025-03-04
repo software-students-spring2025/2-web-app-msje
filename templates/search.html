@@ -21,7 +21,7 @@
                 <h3>{{ post["title"] }}</h3>
                 <p><strong>By:</strong> {{ post["user"] }}</p>
                 <p>{{ " ".join(post["content"].split()[:20]) }}...</p>
-                <a href="{{ url_for('post_detail', post_id=post['id']) }}" class="read-more">Read More</a>
+                <a href="{{ url_for('post_detail', post_id=post._id|string) }}" class="read-more">Read More</a>
             </div>
             {% endfor %}
         {% elif query %}
