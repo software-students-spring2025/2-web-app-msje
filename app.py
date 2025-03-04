@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # from flask-login description 
 # need to change this (shouldn't be hardcoded)
-app.secret_key = '123'
+app.secret_key = os.getenv("SECRET_KEY")
 
 login_manager = flask_login.LoginManager()
 
